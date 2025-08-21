@@ -26,7 +26,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdbool.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -58,7 +58,121 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void dispClear()
+{
+  HAL_GPIO_WritePin(Disp1LAT_GPIO_Port, Disp1LAT_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(Disp2LAT_GPIO_Port, Disp2LAT_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(Disp1CLR_GPIO_Port, Disp1CLR_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(Disp2CLR_GPIO_Port, Disp2CLR_Pin, GPIO_PIN_RESET);
+  HAL_Delay(1);
+  HAL_GPIO_WritePin(Disp1CLR_GPIO_Port, Disp1CLR_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(Disp2CLR_GPIO_Port, Disp2CLR_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(Disp1LAT_GPIO_Port, Disp1LAT_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(Disp2LAT_GPIO_Port, Disp2LAT_Pin, GPIO_PIN_SET);
+}
 
+void dispEnabled(bool enable)
+{
+  HAL_GPIO_WritePin(DispOE_GPIO_Port, DispOE_Pin, !enable);
+}
+
+void disp1Write(uint8_t number, uint8_t digit, uint8_t status, uint8_t dp)
+{
+  static uint8_t lookup[16] = {
+      0x3F, // 0
+      0x06, // 1
+      0x5B, // 2
+      0x4F, // 3
+      0x66, // 4
+      0x6D, // 5
+      0x7D, // 6
+      0x07, // 7
+      0x7F, // 8
+      0x67, // 9
+      0x77, // A
+      0x7C, // B
+      0x39, // C
+      0x5E, // D
+      0x79, // E
+      0x71, // F
+  };
+  struct
+  {
+    uint8_t ActiveDigit : 4;
+    uint8_t StatusLEDs : 4;
+    uint8_t Value : 7;
+    uint8_t Point : 1;
+  } data;
+
+  if (digit >= 4)
+    return;
+  if (number >= sizeof(lookup))
+    return;
+
+  data.StatusLEDs = status;
+  data.ActiveDigit = 1 << digit;
+  data.Value = ~lookup[number];
+  data.Point = !dp;
+
+  HAL_GPIO_WritePin(Disp1LAT_GPIO_Port, Disp1LAT_Pin, GPIO_PIN_RESET);
+  HAL_StatusTypeDef transStatus = HAL_SPI_Transmit(&hspi1, (void *)&data, sizeof(data), 1);
+  if (transStatus != HAL_OK)
+  {
+    HAL_GPIO_WritePin(Heartbeat_GPIO_Port, Heartbeat_Pin, GPIO_PIN_SET);
+    while (1)
+      ;
+  }
+  HAL_GPIO_WritePin(Disp1LAT_GPIO_Port, Disp1LAT_Pin, GPIO_PIN_SET);
+}
+
+void disp2Write(uint8_t number, uint8_t digit, uint8_t status, uint8_t dp)
+{
+  static uint8_t lookup[16] = {
+      0x3F, // 0
+      0x06, // 1
+      0x5B, // 2
+      0x4F, // 3
+      0x66, // 4
+      0x6D, // 5
+      0x7D, // 6
+      0x07, // 7
+      0x7F, // 8
+      0x67, // 9
+      0x77, // A
+      0x7C, // B
+      0x39, // C
+      0x5E, // D
+      0x79, // E
+      0x71, // F
+  };
+  struct
+  {
+    uint8_t ActiveDigit : 4;
+    uint8_t StatusLEDs : 4;
+    uint8_t Value : 7;
+    uint8_t Point : 1;
+  } data;
+
+  if (digit >= 4)
+    return;
+  if (number >= sizeof(lookup))
+    return;
+
+  data.StatusLEDs = status;
+  data.ActiveDigit = 1 << digit;
+  data.Value = ~lookup[number];
+  data.Point = !dp;
+
+  HAL_GPIO_WritePin(Disp2LAT_GPIO_Port, Disp2LAT_Pin, GPIO_PIN_RESET);
+  HAL_StatusTypeDef transStatus = HAL_SPI_Transmit(&hspi1, (void *)&data, sizeof(data), 1);
+  if (transStatus != HAL_OK)
+  {
+    HAL_GPIO_WritePin(Heartbeat_GPIO_Port, Heartbeat_Pin, GPIO_PIN_SET);
+    while (1)
+      ;
+  }
+  HAL_GPIO_WritePin(Disp2LAT_GPIO_Port, Disp2LAT_Pin, GPIO_PIN_SET);
+}
 /* USER CODE END 0 */
 
 /**
@@ -95,7 +209,9 @@ int main(void)
   MX_TIM16_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  dispClear();
+  dispEnabled(true);
+  const int timing = 1;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -105,6 +221,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    disp1Write(1, 0, 0, 0);
+    HAL_Delay(timing);
   }
   /* USER CODE END 3 */
 }
