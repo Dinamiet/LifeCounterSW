@@ -4,15 +4,15 @@ include(FetchContent)
 set(FETCHCONTENT_QUIET OFF)
 
 FetchContent_Declare(
-	Template
+	Scheduler
 	GIT_REPOSITORY
-		git@bitbucket.org:dinamiet/template.git
+		git@github.com:Dinamiet/Scheduler.git
 	GIT_TAG
-		master
+		main
 	SOURCE_DIR
-		${CMAKE_SOURCE_DIR}/lib/Template
+		${CMAKE_SOURCE_DIR}/lib/Scheduler
 )
 
 FetchContent_MakeAvailable(
-	# Template
+	Scheduler
 )

@@ -51,7 +51,7 @@
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -179,7 +179,7 @@ void disp2Write(uint8_t number, uint8_t digit, uint8_t status, uint8_t dp)
   * @brief  The application entry point.
   * @retval int
   */
-int main(void)
+int _main_(void)
 {
 
   /* USER CODE BEGIN 1 */
