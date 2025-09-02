@@ -14,6 +14,6 @@ void Display_Setup();
 
 void Display_Clear(Display disp);
 void Display_Enable(bool enable);
-void Display_ShowInt(Display disp, uint16_t value);
+void Display_ShowUInt(Display disp, uint16_t value);
 
 #endif
