@@ -88,6 +88,8 @@ void Error_Handler(void);
 #define Disp1CLR_Pin GPIO_PIN_4
 #define Disp1CLR_GPIO_Port GPIOB
 
+#define DispLAT_Pin GPIO_PIN_3
+
 /* USER CODE BEGIN Private defines */
 void SystemClock_Config(void);
 /* USER CODE END Private defines */
