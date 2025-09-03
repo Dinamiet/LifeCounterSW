@@ -5,9 +5,11 @@ typedef enum _TaskID_
 {
 	TASK_HEARTBEAT,
 	TASK_RENDER,
+	TASK_BUTTON_MONITOR,
 } TaskID;
 
-#define HEARTBEAT_PERIOD 500 // ms
-#define RENDER_PERIOD 1 // ms
+#define HEARTBEAT_PERIOD      500 // ms
+#define RENDER_PERIOD         2   // ms
+#define BUTTON_MONITOR_PERIOD 5   // ms
 
 #endif

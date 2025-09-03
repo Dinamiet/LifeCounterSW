@@ -1,6 +1,7 @@
 #include "main.h"
 
 #include "display.h"
+#include "encoder.h"
 #include "gpio.h"
 #include "i2c.h"
 #include "spi.h"
@@ -27,6 +28,8 @@ int main()
 	Display_Setup();
 
 	Display_Enable(true);
+
+	Encoder_Setup();
 
 	while (true)
 	{
