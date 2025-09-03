@@ -1,25 +1,24 @@
 #include "button.h"
 
+#include "events.h"
+#include "utilities.h"
+
 SchedulerTask buttonMonitorTask;
 
 void encoderBTNMonitor_Task(void* _)
 {
 	(void)_; // Unused
-	static bool    btn1PrevState = false;
-	static bool    btn2PrevState = false;
+	static bool btn1PrevState = false;
+	static bool btn2PrevState = false;
 
 	bool btn1State = HAL_GPIO_ReadPin(Encoder1BTN_GPIO_Port, Encoder1BTN_Pin);
 	bool btn2State = HAL_GPIO_ReadPin(Encoder2BTN_GPIO_Port, Encoder2BTN_Pin);
 
 	if (btn1PrevState != btn1State)
-	{
-		/** TODO: Handle button state changed */
-	}
+		Observer_Publish(&eventNotifier, EVENT_BUTTON_1_PRESS, &btn1State);
 
 	if (btn2PrevState != btn2State)
-	{
-		/** TODO: Handle button state changed */
-	}
+		Observer_Publish(&eventNotifier, EVENT_BUTTON_2_PRESS, &btn2State);
 
 	btn1PrevState = btn1State;
 	btn2PrevState = btn2State;
