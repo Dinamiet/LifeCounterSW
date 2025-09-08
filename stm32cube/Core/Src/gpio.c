@@ -74,11 +74,17 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(PWR_OK_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : Encoder2CLK_Pin Encoder2DAT_Pin Encoder2BTN_Pin */
-  GPIO_InitStruct.Pin = Encoder2CLK_Pin|Encoder2DAT_Pin|Encoder2BTN_Pin;
+  /*Configure GPIO pins : Encoder2DAT_Pin Encoder2BTN_Pin */
+  GPIO_InitStruct.Pin = Encoder2DAT_Pin|Encoder2BTN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Encoder2CLK_Pin */
+  GPIO_InitStruct.Pin = Encoder2CLK_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(Encoder2CLK_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : Disp2LAT_Pin Disp2CLR_Pin DispOE_Pin Buzzer_Pin */
   GPIO_InitStruct.Pin = Disp2LAT_Pin|Disp2CLR_Pin|DispOE_Pin|Buzzer_Pin;
@@ -87,8 +93,14 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : Encoder1CLK_Pin Encoder1DAT_Pin Encoder1BTN_Pin */
-  GPIO_InitStruct.Pin = Encoder1CLK_Pin|Encoder1DAT_Pin|Encoder1BTN_Pin;
+  /*Configure GPIO pin : Encoder1CLK_Pin */
+  GPIO_InitStruct.Pin = Encoder1CLK_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(Encoder1CLK_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : Encoder1DAT_Pin Encoder1BTN_Pin */
+  GPIO_InitStruct.Pin = Encoder1DAT_Pin|Encoder1BTN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
@@ -99,6 +111,10 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(Heartbeat_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_1_IRQn);
 
 }
 
