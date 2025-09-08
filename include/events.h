@@ -5,6 +5,10 @@ typedef enum _Events_
 {
 	EVENT_BUTTON_1_PRESS,
 	EVENT_BUTTON_2_PRESS,
+	EVENT_KNOB_1_INC,
+	EVENT_KNOB_1_DEC,
+	EVENT_KNOB_2_INC,
+	EVENT_KNOB_2_DEC,
 } Events;
 
 #endif
