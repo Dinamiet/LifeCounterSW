@@ -1,5 +1,6 @@
 #include "main.h"
 
+#include "buzzer.h"
 #include "display.h"
 #include "encoder.h"
 #include "gpio.h"
@@ -30,6 +31,8 @@ int main()
 	Display_Enable(true);
 
 	Encoder_Setup();
+
+	Buzzer_Setup();
 
 	while (true)
 	{

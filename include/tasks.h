@@ -7,11 +7,13 @@ typedef enum _TaskID_
 	TASK_RENDER,
 	TASK_BUTTON_MONITOR,
 	TASK_KNOB_TURN,
+	TASK_BUZZER_OFF,
 } TaskID;
 
 #define HEARTBEAT_PERIOD      500 // ms
 #define RENDER_PERIOD         2   // ms
 #define BUTTON_MONITOR_PERIOD 5   // ms
 #define KNOB_TURN_PERIOD      5   // ms
+#define BUZZ_ON_TIME          25  // ms
 
 #endif
