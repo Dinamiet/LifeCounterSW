@@ -1,17 +1,17 @@
 #include "handlers.h"
+
+#include "buzzer.h"
 #include "display.h"
 
-#include "tim.h"
-
-uint16_t life2 = 0;
+uint16_t life2 = 5;
 
 void knobIncrement2(const void* _)
 {
 	(void)_; // Unused
-	if (life2 < 9999)
+	if (life2 < 100)
 		Display_ShowUInt(DISPLAY2, ++life2);
 
-	// htim3.Instance->CCR2 = life2; // Duty
+	Buzzer_Freq(life2);
 }
 
 void knobDecrement2(const void* _)
@@ -21,7 +21,7 @@ void knobDecrement2(const void* _)
 	if (life2 > 0)
 		Display_ShowUInt(DISPLAY2, --life2);
 
-	// htim3.Instance->CCR2 = life2; // Duty
+	Buzzer_Freq(life2);
 }
 
 void buttonEvent2(const void* _)
