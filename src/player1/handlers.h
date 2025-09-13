@@ -3,6 +3,6 @@
 
 void knobIncrement(const void* _);
 void knobDecrement(const void* _);
-void buttonEvent(const void* _);
+void buttonEvent(const void* btnState);
 
 #endif

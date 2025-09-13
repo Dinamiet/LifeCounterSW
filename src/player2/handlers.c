@@ -28,5 +28,6 @@ void buttonEvent2(const void* _)
 {
 	(void)_; // Unused
 	// HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_2);
+	Display_Clear(DISPLAY1);
 	Display_Clear(DISPLAY2);
 }
