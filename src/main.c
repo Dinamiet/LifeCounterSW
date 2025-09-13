@@ -31,8 +31,6 @@ int main()
 
 	Display_Setup();
 
-	Display_Enable(true);
-
 	Encoder_Setup();
 
 	Player1_Setup();
