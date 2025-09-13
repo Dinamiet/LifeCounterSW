@@ -25,6 +25,7 @@ int main()
 	MX_SPI1_Init();
 	MX_USART1_UART_Init();
 	MX_TIM3_Init();
+	MX_TIM16_Init();
 
 	Utilities_Setup();
 
