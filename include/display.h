@@ -13,7 +13,7 @@ typedef enum _Display_
 void Display_Setup();
 
 void Display_Clear(Display disp);
-void Display_Brightness(uint16_t brightness);
+void Display_Brightness(uint8_t brightness);
 void Display_ShowUInt(Display disp, uint16_t value);
 
 #endif
