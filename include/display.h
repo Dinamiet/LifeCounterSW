@@ -15,5 +15,6 @@ void Display_Setup();
 void Display_Clear(Display disp);
 void Display_Brightness(uint8_t brightness);
 void Display_ShowUInt(Display disp, uint16_t value);
+void Display_ShowStatus(Display disp, uint8_t status);
 
 #endif
