@@ -25,13 +25,7 @@ static void btnEvent_Handler(const void* data)
 			if (Scheduler_FindTask(&scheduler, TASK_BTN_LONG_PRESS + event->Button) == &btnLongPressTask[event->Button])
 				Scheduler_Refresh(&scheduler, &btnLongPressTask[event->Button]);
 			else
-				Scheduler_CreateSingleTask(
-						&scheduler,
-						&btnLongPressTask[event->Button],
-						TASK_BTN_LONG_PRESS + event->Button,
-						btnLongPress_TaskHandler,
-						&button[event->Button],
-						BUTTON_LONG_PRESS);
+				Scheduler_CreateSingleTask(&scheduler, &btnLongPressTask[event->Button], TASK_BTN_LONG_PRESS + event->Button, btnLongPress_TaskHandler, &button[event->Button], BUTTON_LONG_PRESS);
 
 			// Setup and handle DOUBLE presses
 			if (withinDoublePressTime[event->Button])
@@ -54,13 +48,7 @@ static void btnEvent_Handler(const void* data)
 			if (Scheduler_FindTask(&scheduler, TASK_BTN_DOUBLE_PRESS + event->Button) == &btnDoublePressTask[event->Button])
 				Scheduler_Refresh(&scheduler, &btnDoublePressTask[event->Button]);
 			else
-				Scheduler_CreateSingleTask(
-						&scheduler,
-						&btnDoublePressTask[event->Button],
-						TASK_BTN_DOUBLE_PRESS + event->Button,
-						btnDoublePress_TaskHandler,
-						&button[event->Button],
-						BUTTON_DOUBLE_PRESS);
+				Scheduler_CreateSingleTask(&scheduler, &btnDoublePressTask[event->Button], TASK_BTN_DOUBLE_PRESS + event->Button, btnDoublePress_TaskHandler, &button[event->Button], BUTTON_DOUBLE_PRESS);
 			break;
 	}
 }
