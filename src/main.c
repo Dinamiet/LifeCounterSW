@@ -5,8 +5,6 @@
 #include "encoder.h"
 #include "gpio.h"
 #include "i2c.h"
-#include "player1.h"
-#include "player2.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -33,8 +31,6 @@ int main()
 
 	Encoder_Setup();
 
-	Player1_Setup();
-	Player2_Setup();
 
 	Buzzer_Setup();
 
