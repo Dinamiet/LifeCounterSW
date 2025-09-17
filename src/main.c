@@ -5,6 +5,7 @@
 #include "encoder.h"
 #include "gpio.h"
 #include "i2c.h"
+#include "navigation.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -31,6 +32,7 @@ int main()
 
 	Encoder_Setup();
 
+	Navigation_Setup();
 
 	Buzzer_Setup();
 

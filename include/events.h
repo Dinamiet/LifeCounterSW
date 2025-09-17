@@ -22,6 +22,9 @@ typedef enum _Events_
 {
 	EVENT_BUTTON,
 	EVENT_KNOB,
+
+	EVENT_BUTTON_LONG_PRESS,
+	EVENT_BUTTON_DOUBLE_PRESS,
 } Events;
 
 typedef union _EventData_
