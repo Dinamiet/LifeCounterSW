@@ -35,6 +35,8 @@ static void btnEvent_Handler(const void* _data)
 			Scheduler_Remove(&scheduler, &btnDoublePressTask[event->Button]);
 			Observer_Publish(&eventNotifier, EVENT_BUTTON_DOUBLE_PRESS, &event->Button);
 		}
+		else
+			Observer_Publish(&eventNotifier, EVENT_BUTTON_SINGLE_PRESS, &event->Button);
 		break;
 
 	case false:
