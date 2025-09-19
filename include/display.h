@@ -9,7 +9,8 @@
 void Display_Setup();
 
 void Display_Clear(EventSide side);
-void Display_Brightness(uint8_t brightness);
+void    Display_SetBrightness(uint8_t brightness);
+uint8_t Display_GetBrightness();
 void Display_ShowUInt(EventSide side, uint16_t value);
 void Display_ShowStatus(EventSide side, uint8_t status);
 
