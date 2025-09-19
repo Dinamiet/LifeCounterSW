@@ -14,10 +14,7 @@ static void modeChange_Handler(const void* data)
 	Mode_Change(side, currentMode[side]);
 }
 
-void Mode_Setup()
-{
-	Observer_Subscribe(&eventNotifier, &modeChangeWatcher, EVENT_BUTTON_LONG_PRESS, modeChange_Handler);
-}
+void Mode_Setup() { Observer_Subscribe(&eventNotifier, &modeChangeWatcher, EVENT_BUTTON_EXTRA_LONG_PRESS, modeChange_Handler); }
 
 void Mode_Change(EventSide side, NavMode mode)
 {
