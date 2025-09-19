@@ -12,8 +12,6 @@ void Display_Setup()
 	Display_Clear(EVENTSIDE_1);
 	Display_Clear(EVENTSIDE_2);
 
-	memset(display, 0, sizeof(display));
-
 	Scheduler_CreateRecurringTask(&scheduler, &renderTask, TASK_RENDER, display_Render, NULL, RENDER_PERIOD);
 	HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
 }
