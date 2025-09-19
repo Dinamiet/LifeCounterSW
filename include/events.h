@@ -17,7 +17,7 @@ typedef enum _Events_
 
 	EVENT_BUTTON_SINGLE_PRESS,
 	EVENT_BUTTON_LONG_PRESS,
-	EVENT_BUTTON_DOUBLE_PRESS,
+	EVENT_BUTTON_EXTRA_LONG_PRESS,
 } Events;
 
 typedef struct _EventData_
