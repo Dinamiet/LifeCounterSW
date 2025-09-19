@@ -1,14 +1,34 @@
 #ifndef _EVENTS_H_
 #define _EVENTS_H_
 
+#include <stdbool.h>
+
+typedef enum _EventSide_
+{
+	EVENTSIDE_1,
+	EVENTSIDE_2,
+	EVENTSIDE_MAX
+} EventSide;
+
 typedef enum _Events_
 {
-	EVENT_BUTTON_1_PRESS,
-	EVENT_BUTTON_2_PRESS,
-	EVENT_KNOB_1_INC,
-	EVENT_KNOB_1_DEC,
-	EVENT_KNOB_2_INC,
-	EVENT_KNOB_2_DEC,
+	EVENT_BUTTON,
+	EVENT_KNOB,
+	EVENT_BEEP,
+
+	EVENT_BUTTON_SINGLE_PRESS,
+	EVENT_BUTTON_LONG_PRESS,
+	EVENT_BUTTON_EXTRA_LONG_PRESS,
 } Events;
+
+typedef struct _EventData_
+{
+	EventSide Side;
+	union
+	{
+		bool  State;
+		bool  Increasing;
+	};
+} EventData;
 
 #endif

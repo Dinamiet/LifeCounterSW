@@ -21,18 +21,9 @@ static uint8_t lookup[16] = {
 	0x71, // F
 };
 
-void Display_ShowUInt(Display disp, uint16_t value)
+void Display_ShowUInt(EventSide side, uint16_t value)
 {
-	DisplayData* dispData = NULL;
-	switch (disp)
-	{
-	case DISPLAY1:
-		dispData = &display1;
-		break;
-
-	case DISPLAY2:
-		dispData = &display2;
-	}
+	DisplayData* dispData = &display[side];
 
 	for (uint8_t i = 0; i < NUM_DIGITS; i++)
 	{

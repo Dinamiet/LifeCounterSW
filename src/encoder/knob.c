@@ -36,23 +36,27 @@ void encoderKnobTurn_Task(void* _)
 
 	if (knob1PendingSteps > 0)
 	{
-		Observer_Publish(&eventNotifier, EVENT_KNOB_1_INC, NULL);
+		EventData data = {.Side = EVENTSIDE_1, .Increasing = true};
+		Observer_Publish(&eventNotifier, EVENT_KNOB, &data);
 		--knob1PendingSteps;
 	}
 	else if (knob1PendingSteps < 0)
 	{
-		Observer_Publish(&eventNotifier, EVENT_KNOB_1_DEC, NULL);
+		EventData data = {.Side = EVENTSIDE_1, .Increasing = false};
+		Observer_Publish(&eventNotifier, EVENT_KNOB, &data);
 		++knob1PendingSteps;
 	}
 
 	if (knob2PendingSteps > 0)
 	{
-		Observer_Publish(&eventNotifier, EVENT_KNOB_2_INC, NULL);
+		EventData data = {.Side = EVENTSIDE_2, .Increasing = true};
+		Observer_Publish(&eventNotifier, EVENT_KNOB, &data);
 		--knob2PendingSteps;
 	}
 	else if (knob2PendingSteps < 0)
 	{
-		Observer_Publish(&eventNotifier, EVENT_KNOB_2_DEC, NULL);
+		EventData data = {.Side = EVENTSIDE_2, .Increasing = false};
+		Observer_Publish(&eventNotifier, EVENT_KNOB, &data);
 		++knob2PendingSteps;
 	}
 }

@@ -8,5 +8,6 @@ extern Scheduler scheduler;
 extern Observer  eventNotifier;
 
 void Utilities_Setup();
+uint32_t Utilities_GetTime();
 
 #endif
