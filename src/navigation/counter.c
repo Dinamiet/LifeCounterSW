@@ -75,3 +75,12 @@ void Counter_Init()
 	Observer_Subscribe(&eventNotifier, &counterChangeWatcher, EVENT_KNOB, changeCounter_Handler);
 }
 
+void Counter_Active(EventSide side, bool active)
+{
+	counter[side].Active = active;
+	if (active)
+	{
+		Display_ShowStatus(side, 1 << counter[side].CurrentShown);
+		Display_ShowUInt(side, counter[side].Values[counter[side].CurrentShown]);
+	}
+}

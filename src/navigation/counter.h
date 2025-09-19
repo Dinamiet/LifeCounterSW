@@ -6,5 +6,6 @@
 #define MAX_COUNTERS 4
 
 void Counter_Init();
+void Counter_Active(EventSide side, bool active);
 
 #endif
