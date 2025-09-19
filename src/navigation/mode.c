@@ -7,11 +7,11 @@ static ObserverSubscription modeChangeWatcher;
 
 static void modeChange_Handler(const void* data)
 {
-	static NavMode currentMode = MODE_COUNTER;
+	static NavMode currentMode[EVENTSIDE_MAX] = {MODE_COUNTER, MODE_COUNTER};
 	EventSide side = *(EventSide*)data;
 
-	currentMode = (currentMode + 1) % MODE_MAX;
-	Mode_Change(side, currentMode);
+	currentMode[side] = (currentMode[side] + 1) % MODE_MAX;
+	Mode_Change(side, currentMode[side]);
 }
 
 void Mode_Setup()
