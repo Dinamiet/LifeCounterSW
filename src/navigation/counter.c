@@ -7,11 +7,17 @@
 #define COUNTER_MAX 9999
 #define COUNTER_MIN 0
 
-uint8_t currentCounter[EVENTSIDE_MAX] = {0};
-uint16_t counter[EVENTSIDE_MAX][MAX_COUNTERS] = {0};
+typedef struct _Counter_
+{
+	bool     Active;
+	uint8_t  CurrentShown;
+	uint16_t Values[MAX_COUNTERS];
+} Counter;
 
-ObserverSubscription counterSwitchWatcher;
-ObserverSubscription counterChangeWatcher;
+static ObserverSubscription counterSwitchWatcher;
+static ObserverSubscription counterChangeWatcher;
+
+static Counter counter[EVENTSIDE_MAX];
 
 static void nextCounter_Handler(const void* data);
 static void changeCounter_Handler(const void* data);
@@ -20,36 +26,52 @@ static void nextCounter_Handler(const void* data)
 {
 	EventSide side = *(EventSide*)data;
 
-	currentCounter[side] = (currentCounter[side] + 1) % MAX_COUNTERS;
-	Display_ShowStatus(side, 1 << currentCounter[side]);
-	Display_ShowUInt(side, counter[side][currentCounter[side]]);
+	if (!counter[side].Active)
+		return;
+
+	uint8_t shown = (counter[side].CurrentShown + 1) % MAX_COUNTERS;
+
+	counter[side].CurrentShown = shown;
+	Display_ShowStatus(side, 1 << shown);
+	Display_ShowUInt(side, counter[side].Values[shown]);
 }
 
 static void changeCounter_Handler(const void* data)
 {
 	EventData* event = (EventData*)data;
 
+	if (!counter[event->Side].Active)
+		return;
+
+	uint8_t shown = counter[event->Side].CurrentShown;
 	switch (event->Increasing)
 	{
 	case true:
-		if (counter[event->Side][currentCounter[event->Side]] < COUNTER_MAX)
-			++counter[event->Side][currentCounter[event->Side]];
+		if (counter[event->Side].Values[shown] < COUNTER_MAX)
+			++counter[event->Side].Values[shown];
 		break;
 
 	case false:
-		if (counter[event->Side][currentCounter[event->Side]] > COUNTER_MIN)
-			--counter[event->Side][currentCounter[event->Side]];
+		if (counter[event->Side].Values[shown] > COUNTER_MIN)
+			--counter[event->Side].Values[shown];
 		break;
 	}
 
-	Display_ShowUInt(event->Side, counter[event->Side][currentCounter[event->Side]]);
+	Display_ShowUInt(event->Side, counter[event->Side].Values[shown]);
 }
 
 void Counter_Init()
 {
-	Display_ShowStatus(EVENTSIDE_1, 1 << currentCounter[EVENTSIDE_1]);
-	Display_ShowStatus(EVENTSIDE_2, 1 << currentCounter[EVENTSIDE_2]);
+	for (EventSide side = 0; side < EVENTSIDE_MAX; ++side)
+	{
+		counter[side].Active       = true;
+		counter[side].CurrentShown = 0;
+		for (uint8_t i = 0; i < MAX_COUNTERS; ++i) counter[side].Values[i] = 0;
+		Display_ShowStatus(side, 1 << counter[side].CurrentShown);
+		Display_ShowUInt(side, counter[side].Values[counter[side].CurrentShown]);
+	}
 
 	Observer_Subscribe(&eventNotifier, &counterSwitchWatcher, EVENT_BUTTON_SINGLE_PRESS, nextCounter_Handler);
 	Observer_Subscribe(&eventNotifier, &counterChangeWatcher, EVENT_KNOB, changeCounter_Handler);
 }
+
