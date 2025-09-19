@@ -5,11 +5,11 @@
 #include "utilities.h"
 
 static ObserverSubscription btnEventNotifier;
-static SchedulerTask        btnDoublePressTask[MAX_BUTTONS];
-static SchedulerTask        btnLongPressTask[MAX_BUTTONS];
+static SchedulerTask btnDoublePressTask[EVENTSIDE_MAX];
+static SchedulerTask btnLongPressTask[EVENTSIDE_MAX];
 
-static Buttons button[MAX_BUTTONS]                = {BUTTON_1, BUTTON_2};
-static bool    withinDoublePressTime[MAX_BUTTONS] = {false};
+static EventSide sides[EVENTSIDE_MAX] = {EVENTSIDE_1, EVENTSIDE_2};
+static bool withinDoublePressTime[EVENTSIDE_MAX] = {false};
 
 static void btnEvent_Handler(const void* data);
 static void btnLongPress_TaskHandler(void* data);
@@ -23,33 +23,33 @@ static void btnEvent_Handler(const void* data)
 	{
 		case true:
 			// Setup and handle LONG presses
-			if (Scheduler_FindTask(&scheduler, TASK_BTN_LONG_PRESS + event->Button) == &btnLongPressTask[event->Button])
-				Scheduler_Refresh(&scheduler, &btnLongPressTask[event->Button]);
+			if (Scheduler_FindTask(&scheduler, TASK_BTN_LONG_PRESS + event->Side) == &btnLongPressTask[event->Side])
+				Scheduler_Refresh(&scheduler, &btnLongPressTask[event->Side]);
 			else
-				Scheduler_CreateSingleTask(&scheduler, &btnLongPressTask[event->Button], TASK_BTN_LONG_PRESS + event->Button, btnLongPress_TaskHandler, &button[event->Button], BUTTON_LONG_PRESS);
+				Scheduler_CreateSingleTask(&scheduler, &btnLongPressTask[event->Side], TASK_BTN_LONG_PRESS + event->Side, btnLongPress_TaskHandler, &sides[event->Side], BUTTON_LONG_PRESS);
 
 			// Setup and handle DOUBLE presses
-			if (withinDoublePressTime[event->Button])
+			if (withinDoublePressTime[event->Side])
 			{
-				withinDoublePressTime[event->Button] = false; // Reset the flag
-				Scheduler_Remove(&scheduler, &btnDoublePressTask[event->Button]);
-				Observer_Publish(&eventNotifier, EVENT_BUTTON_DOUBLE_PRESS, &event->Button);
+				withinDoublePressTime[event->Side] = false; // Reset the flag
+				Scheduler_Remove(&scheduler, &btnDoublePressTask[event->Side]);
+				Observer_Publish(&eventNotifier, EVENT_BUTTON_DOUBLE_PRESS, &event->Side);
 			}
 			else
-				Observer_Publish(&eventNotifier, EVENT_BUTTON_SINGLE_PRESS, &event->Button);
+				Observer_Publish(&eventNotifier, EVENT_BUTTON_SINGLE_PRESS, &event->Side);
 			break;
 
 		case false:
 			// Setup and handle LONG presses
-			if (Scheduler_FindTask(&scheduler, TASK_BTN_LONG_PRESS + event->Button) == &btnLongPressTask[event->Button])
-				Scheduler_Remove(&scheduler, &btnLongPressTask[event->Button]);
+			if (Scheduler_FindTask(&scheduler, TASK_BTN_LONG_PRESS + event->Side) == &btnLongPressTask[event->Side])
+				Scheduler_Remove(&scheduler, &btnLongPressTask[event->Side]);
 
 			// Setup and handle DOUBLE presses
-			withinDoublePressTime[event->Button] = true;
-			if (Scheduler_FindTask(&scheduler, TASK_BTN_DOUBLE_PRESS + event->Button) == &btnDoublePressTask[event->Button])
-				Scheduler_Refresh(&scheduler, &btnDoublePressTask[event->Button]);
+			withinDoublePressTime[event->Side] = true;
+			if (Scheduler_FindTask(&scheduler, TASK_BTN_DOUBLE_PRESS + event->Side) == &btnDoublePressTask[event->Side])
+				Scheduler_Refresh(&scheduler, &btnDoublePressTask[event->Side]);
 			else
-				Scheduler_CreateSingleTask(&scheduler, &btnDoublePressTask[event->Button], TASK_BTN_DOUBLE_PRESS + event->Button, btnDoublePress_TaskHandler, &button[event->Button], BUTTON_DOUBLE_PRESS);
+				Scheduler_CreateSingleTask(&scheduler, &btnDoublePressTask[event->Side], TASK_BTN_DOUBLE_PRESS + event->Side, btnDoublePress_TaskHandler, &sides[event->Side], BUTTON_DOUBLE_PRESS);
 			break;
 	}
 }
@@ -58,7 +58,7 @@ static void btnLongPress_TaskHandler(void* data) { Observer_Publish(&eventNotifi
 
 static void btnDoublePress_TaskHandler(void* data)
 {
-	Buttons* doublePressedButton                = data;
+	EventSide* doublePressedButton              = data;
 	withinDoublePressTime[*doublePressedButton] = false;
 }
 

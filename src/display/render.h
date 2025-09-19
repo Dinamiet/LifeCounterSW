@@ -1,6 +1,7 @@
 #ifndef _RENDER_H_
 #define _RENDER_H_
 
+#include "events.h"
 #include "utilities.h"
 
 #define NUM_DIGITS 4
@@ -14,8 +15,7 @@ typedef struct _DisplayData_
 	uint8_t Status : 4;
 } DisplayData;
 
-extern DisplayData display1;
-extern DisplayData display2;
+extern DisplayData display[EVENTSIDE_MAX];
 
 void display_Render(void* _);
 

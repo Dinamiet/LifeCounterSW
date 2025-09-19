@@ -16,13 +16,13 @@ void encoderBTNMonitor_Task(void* _)
 
 	if (btn1PrevState != btn1State)
 	{
-		EventData data = {.Button = BUTTON_1, .State = btn1State};
+		EventData data = {.Side = EVENTSIDE_1, .State = btn1State};
 		Observer_Publish(&eventNotifier, EVENT_BUTTON, &data);
 	}
 
 	if (btn2PrevState != btn2State)
 	{
-		EventData data = {.Button = BUTTON_2, .State = btn2State};
+		EventData data = {.Side = EVENTSIDE_2, .State = btn2State};
 		Observer_Publish(&eventNotifier, EVENT_BUTTON, &data);
 	}
 

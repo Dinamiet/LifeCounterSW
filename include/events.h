@@ -3,20 +3,12 @@
 
 #include <stdbool.h>
 
-#define MAX_BUTTONS 2
-#define MAX_KNOBS   2
-
-typedef enum _Buttons_
+typedef enum _EventSide_
 {
-	BUTTON_1,
-	BUTTON_2,
-} Buttons;
-
-typedef enum _Knobs_
-{
-	KNOB_1,
-	KNOB_2,
-} Knobs;
+	EVENTSIDE_1,
+	EVENTSIDE_2,
+	EVENTSIDE_MAX
+} EventSide;
 
 typedef enum _Events_
 {
@@ -28,16 +20,12 @@ typedef enum _Events_
 	EVENT_BUTTON_DOUBLE_PRESS,
 } Events;
 
-typedef union _EventData_
+typedef struct _EventData_
 {
-	struct
+	EventSide Side;
+	union
 	{
-		Buttons Button;
-		bool    State;
-	};
-	struct
-	{
-		Knobs Knob;
+		bool  State;
 		bool  Increasing;
 	};
 } EventData;

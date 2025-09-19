@@ -21,29 +21,16 @@ typedef union _RenderIndex_
 } RenderIndex;
 
 SchedulerTask renderTask;
-DisplayData   display1;
-DisplayData   display2;
+DisplayData   display[EVENTSIDE_MAX];
+GPIO_TypeDef* displayGPIOPort[EVENTSIDE_MAX] = {Disp1LAT_GPIO_Port, Disp2LAT_GPIO_Port};
 
 void display_Render(void* _)
 {
 	(void)_; // Unused parameter
 	static RenderIndex index = {.Value = 0};
 
-	DisplayData*  dispData  = NULL;
-	GPIO_TypeDef* gpio_port = NULL;
-
-	switch (index.DisplayNum)
-	{
-		case 0:
-			dispData  = &display1;
-			gpio_port = Disp1LAT_GPIO_Port;
-			break;
-
-		case 1:
-			dispData  = &display2;
-			gpio_port = Disp2LAT_GPIO_Port;
-			break;
-	}
+	DisplayData*  dispData  = &display[index.DisplayNum];
+	GPIO_TypeDef* gpio_port = displayGPIOPort[index.DisplayNum];
 
 	struct
 	{
