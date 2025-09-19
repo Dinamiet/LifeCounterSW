@@ -25,8 +25,8 @@ static ObserverSubscription settingChangeWatcher;
 
 static SettingOption settingOptions[MAX_SETTINGS] = {
 		{.GetSetting = Display_GetBrightness, .SetSetting = Display_SetBrightness, .Value = 0},
-		{       .GetSetting = Buzzer_GetFreq,        .SetSetting = Buzzer_SetFreq, .Value = 0},
 		{     .GetSetting = Buzzer_GetVolume,      .SetSetting = Buzzer_SetVolume, .Value = 0},
+		{       .GetSetting = Buzzer_GetFreq,        .SetSetting = Buzzer_SetFreq, .Value = 0},
 };
 
 static Setting setting[EVENTSIDE_MAX] = {
