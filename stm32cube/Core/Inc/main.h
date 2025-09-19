@@ -61,10 +61,11 @@ void Error_Handler(void);
 #define PWR_Ctrl_GPIO_Port GPIOB
 #define PWR_OK_Pin GPIO_PIN_15
 #define PWR_OK_GPIO_Port GPIOC
-#define Encoder2CLK_Pin GPIO_PIN_0
-#define Encoder2CLK_GPIO_Port GPIOA
-#define Encoder2DAT_Pin GPIO_PIN_1
+#define Encoder2DAT_Pin       GPIO_PIN_0
 #define Encoder2DAT_GPIO_Port GPIOA
+#define Encoder2CLK_Pin       GPIO_PIN_1
+#define Encoder2CLK_GPIO_Port GPIOA
+#define Encoder2CLK_EXTI_IRQn EXTI0_1_IRQn
 #define Encoder2BTN_Pin GPIO_PIN_2
 #define Encoder2BTN_GPIO_Port GPIOA
 #define Disp2LAT_Pin GPIO_PIN_3
@@ -77,6 +78,7 @@ void Error_Handler(void);
 #define Buzzer_GPIO_Port GPIOA
 #define Encoder1CLK_Pin GPIO_PIN_0
 #define Encoder1CLK_GPIO_Port GPIOB
+#define Encoder1CLK_EXTI_IRQn EXTI0_1_IRQn
 #define Encoder1DAT_Pin GPIO_PIN_1
 #define Encoder1DAT_GPIO_Port GPIOB
 #define Encoder1BTN_Pin GPIO_PIN_2
@@ -88,8 +90,10 @@ void Error_Handler(void);
 #define Disp1CLR_Pin GPIO_PIN_4
 #define Disp1CLR_GPIO_Port GPIOB
 
-/* USER CODE BEGIN Private defines */
+#define DispLAT_Pin GPIO_PIN_3
 
+/* USER CODE BEGIN Private defines */
+void SystemClock_Config(void);
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

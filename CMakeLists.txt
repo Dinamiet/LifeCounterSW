@@ -1,68 +1,112 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.20.0)
 
-#
-# This file is generated only once,
-# and is not re-generated if converter is called multiple times.
-#
-# User is free to modify the file as much as necessary
-#
+include(stm32cube/cmake/gcc-arm-none-eabi.cmake)
 
-# Setup compiler settings
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_C_EXTENSIONS ON)
+project(
+    LifeCounter
+    VERSION
+        00.01
+)
 
+enable_language(
+    C
+    ASM
+)
 
-# Define the build type
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE "Debug")
+add_executable(
+    ${PROJECT_NAME}
+)
+
+# Doxygen document generation
+find_package(Doxygen)
+if (DOXYGEN_FOUND AND NOT DOXYGEN_IN)
+
+	# Set input configuration
+	set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile)
+
+	# Add documentation target
+	add_custom_target(
+		docs
+		COMMAND
+			${DOXYGEN_EXECUTABLE} ${DOXYGEN_IN}
+		WORKING_DIRECTORY
+			${CMAKE_CURRENT_BINARY_DIR}
+		COMMENT
+			"Generate documentation with Doxygen"
+		VERBATIM
+	)
 endif()
 
-# Set the project name
-set(CMAKE_PROJECT_NAME LifeCounter)
-
-# Enable compile command to ease indexing with e.g. clangd
-set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
-
-# Core project settings
-project(${CMAKE_PROJECT_NAME})
-message("Build type: " ${CMAKE_BUILD_TYPE})
-
-# Enable CMake support for ASM and C languages
-enable_language(C ASM)
-
-# Create an executable object type
-add_executable(${CMAKE_PROJECT_NAME})
-
-# Add STM32CubeMX generated sources
-add_subdirectory(cmake/stm32cubemx)
-
-# Link directories setup
-target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
-    # Add user defined library search paths
+target_compile_options(
+	${PROJECT_NAME}
+	PRIVATE
+		"-Wall" # Enable all common warnings
+		"-Wextra" # Enable more warnings
+		"-Wpedantic" # Warn about non-standard code
+		"-Werror" # Warnings are treated as errors
+		"-Wshadow" # Warn about shadow variables
+		"-Wdouble-promotion" # Warn when promoting floats to doubles
+		"-Wformat=2" # printf and scanf warnings
+		"-Wformat-security" # printf and scanf warnings
+		"-Wformat-truncation" # printf and scanf warnings
+		"-Wundef" # Warn when evaluating not defined flags
+		"-fno-common" # Warn about multiple global variables with the same name
+		"-Wuninitialized" # Warn about uninitialized’ variables
+		#"-Wconversion" # Warn about implicit conversions
+		#"-Wpadded" # Warn about padded structures
+		"-flto" # Link time optimization
+		"-fno-fat-lto-objects" # Link time optimization
+		"-ffunction-sections" # Link time optimization help
+		"-fdata-sections" # Link time optimization help
+		"-fanalyzer" # Static analysis of program flow
 )
 
-# Add sources to executable
-target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-    # Add user sources here
+target_link_options(
+	${PROJECT_NAME}
+	PRIVATE
+		"-Wl,--gc-sections" # Remove unwanted/unused sections
+		"-flto" # Link time optimization
+		"-fno-fat-lto-objects" # Link time optimization
 )
 
-# Add include paths
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
-    # Add user defined include paths
+configure_file("src/version.h.in" "version.h")
+
+target_include_directories(
+	${PROJECT_NAME}
+	PUBLIC
+		include
+	PRIVATE
+		${PROJECT_BINARY_DIR}
 )
 
-# Add project symbols (macros)
-target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
-    # Add user defined symbols
+file(
+	GLOB_RECURSE
+		INCLUDE_FILES
+	CONFIGURE_DEPENDS
+		"include/*.h"
 )
 
-# Remove wrong libob.a library dependency when using cpp files
-list(REMOVE_ITEM CMAKE_C_IMPLICIT_LINK_LIBRARIES ob)
+file(
+	GLOB_RECURSE
+		SOURCE_FILES
+	CONFIGURE_DEPENDS
+		"src/*.c"
+)
 
-# Add linked libraries
-target_link_libraries(${CMAKE_PROJECT_NAME}
+target_sources(
+	${PROJECT_NAME}
+	PUBLIC
+		${INCLUDE_FILES}
+	PRIVATE
+		${SOURCE_FILES}
+)
+
+add_subdirectory(stm32cube/cmake/stm32cubemx)
+add_subdirectory(lib)
+
+target_link_libraries(
+    ${PROJECT_NAME}
     stm32cubemx
-
-    # Add user defined libraries
+    Scheduler
+	Observer
 )

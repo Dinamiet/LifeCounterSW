@@ -51,7 +51,7 @@
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -179,7 +179,7 @@ void disp2Write(uint8_t number, uint8_t digit, uint8_t status, uint8_t dp)
   * @brief  The application entry point.
   * @retval int
   */
-int main(void)
+int _main_(void)
 {
 
   /* USER CODE BEGIN 1 */
@@ -206,8 +206,9 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   MX_SPI1_Init();
-  MX_TIM16_Init();
   MX_USART1_UART_Init();
+  MX_TIM3_Init();
+  MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
   dispClear();
   dispEnabled(true);
@@ -257,7 +258,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
   RCC_ClkInitStruct.SYSCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV4;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_APB1_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_APB1_DIV4;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
   {
