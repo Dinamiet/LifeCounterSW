@@ -4,7 +4,9 @@
 #include <stdint.h>
 
 void Buzzer_Setup();
-void Buzzer_Freq(uint8_t freq);
-void Buzzer_Volume(uint8_t volume);
+void    Buzzer_SetFreq(uint8_t freq);
+uint8_t Buzzer_GetFreq();
+void    Buzzer_SetVolume(uint8_t volume);
+uint8_t Buzzer_GetVolume();
 
 #endif
