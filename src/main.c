@@ -1,6 +1,7 @@
 #include "main.h"
 
 #include "buzzer.h"
+#include "config.h"
 #include "display.h"
 #include "encoder.h"
 #include "gpio.h"
@@ -35,6 +36,8 @@ int main()
 	Navigation_Setup();
 
 	Buzzer_Setup();
+
+	Config_Load();
 
 	while (true)
 	{

@@ -1,6 +1,7 @@
 #include "setting.h"
 
 #include "buzzer.h"
+#include "config.h"
 #include "display.h"
 #include "utilities.h"
 
@@ -102,5 +103,9 @@ void Setting_Active(EventSide side, bool active)
 
 		Display_ShowStatus(side, ~(1 << setting[side].CurrentShown));
 		Display_ShowUInt(side, setting[side].Options[setting[side].CurrentShown].Value);
+	}
+	else
+	{
+		Config_Save();
 	}
 }
