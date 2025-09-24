@@ -56,7 +56,8 @@ void buzzer_Cmd(const CLI* cli, const size_t argc, char* const argv[])
 			Buzzer_Buzz();
 			break;
 
-		default:
+		case cmdUnknown:
+			CLI_Write(cli, "Unknown parameters\n");
 			break;
 	}
 }
@@ -64,8 +65,8 @@ void buzzer_Cmd(const CLI* cli, const size_t argc, char* const argv[])
 const char* const buzzer_Help[] = {
 		"Buzzer interactions and adjustments",
 		"Usage: buzzer -[v:f:b]",
-		"  -v\tSet volume (0-100)",
-		"  -f\tSelect frequency (0-100)",
-		"  -b\tBuzz for a short duration",
+		"  -v {value}\tSet volume (0-100)",
+		"  -f {value}\tSelect frequency (0-100)",
+		"  -b        \tBuzz for a short duration",
 		0,
 };
