@@ -1,19 +1,25 @@
+// clang-format off
 #include "usart.h"
+// clang-format on
 #include "cmd.h"
 #include "cmdList.h"
+#include "tasks.h"
+#include "utilities.h"
 
 #include <stdio.h>
 
 #define PROMPT ">>"
 #define CMD(x) {#x, x##_Cmd, x##_Help}
 
-static CLI    cmdLine;
-static size_t cmdLine_read(char* str, size_t max);
-static size_t cmdLine_write(const char* format, va_list params);
+static CLI           cmdLine;
+static SchedulerTask cliTask;
+static size_t        cmdLine_read(char* str, size_t max);
+static size_t        cmdLine_write(const char* format, va_list params);
+static void          cliTask_Handler(void* data);
 
 static CLICommand cmdList[] = {
 		{"help", CLI_Cmd, CLI_Help},
-		{NULL, NULL, NULL}
+		{  NULL,    NULL,     NULL}
 };
 
 static size_t cmdLine_read(char* str, size_t max)
@@ -36,4 +42,14 @@ static size_t cmdLine_write(const char* format, va_list params)
 	return 0;
 }
 
-void CMD_Setup() { CLI_Init(&cmdLine, PROMPT, cmdList, cmdLine_read, cmdLine_write); }
+static void cliTask_Handler(void* data)
+{
+	CLI* cli = (CLI*)data;
+	CLI_Process(cli);
+}
+
+void CMD_Setup()
+{
+	CLI_Init(&cmdLine, PROMPT, cmdList, cmdLine_read, cmdLine_write);
+	Scheduler_CreateRecurringTask(&scheduler, &cliTask, TASK_CLI, cliTask_Handler, &cmdLine, CLI_PERIOD);
+}
