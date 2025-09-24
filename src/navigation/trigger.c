@@ -1,5 +1,6 @@
 #include "trigger.h"
 
+#include "buzzer.h"
 #include "events.h"
 #include "tasks.h"
 #include "utilities.h"
@@ -48,7 +49,7 @@ static void longPressCheck_Task(void* _)
 {
 	(void)_; // Unused
 
-	Observer_Publish(&eventNotifier, EVENT_BEEP, NULL);
+	Buzzer_Buzz();
 }
 
 void Trigger_Setup() { Observer_Subscribe(&eventNotifier, &btnEventNotifier, EVENT_BUTTON, btnEvent_Handler); }
