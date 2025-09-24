@@ -3,7 +3,7 @@
 // clang-format on
 #include "cmdList.h"
 
-void poweroff_Cmd(const CLI* cli, const size_t argc, const char* const argv[])
+void poweroff_Cmd(const CLI* cli, const size_t argc, char* const argv[])
 {
 	(void)argc; // Unused
 	(void)argv; // Unused
