@@ -1,10 +1,10 @@
-#include "buzzer.h"
 #include "buzz.h"
 
-#include "tim.h"
-
-#include "utilities.h"
+#include "buzzer.h"
+#include "events.h"
 #include "tasks.h"
+#include "tim.h"
+#include "utilities.h"
 
 SchedulerTask buzzingOffTask;
 
@@ -27,3 +27,5 @@ void buzzerBuzz(const void* _)
 	else
 		Scheduler_CreateSingleTask(&scheduler, &buzzingOffTask, TASK_BUZZER_OFF, buzzingOff_Task, NULL, BUZZ_ON_TIME);
 }
+
+void Buzzer_Buzz() { Observer_Publish(&eventNotifier, EVENT_BEEP, NULL); }
