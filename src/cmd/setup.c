@@ -18,6 +18,9 @@ static size_t        cmdLine_write(const char* format, va_list params);
 static void          cliTask_Handler(void* data);
 
 static CLICommand cmdList[] = {
+		CMD(display),
+		CMD(buzzer),
+		CMD(poweroff),
 		{"help", CLI_Cmd, CLI_Help},
 		{  NULL,    NULL,     NULL}
 };
