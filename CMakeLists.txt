@@ -110,4 +110,5 @@ target_link_libraries(
     Scheduler
 	Observer
 	CLI
+	Buffers
 )
