@@ -1,6 +1,7 @@
 #include "main.h"
 
 #include "buzzer.h"
+#include "cmd.h"
 #include "config.h"
 #include "display.h"
 #include "encoder.h"
@@ -38,6 +39,8 @@ int main()
 	Buzzer_Setup();
 
 	Config_Load();
+
+	CMD_Setup();
 
 	while (true)
 	{
