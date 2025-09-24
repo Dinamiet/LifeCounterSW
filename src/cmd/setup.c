@@ -38,7 +38,7 @@ static size_t cmdLine_write(const char* format, va_list params)
 	int  len = vsnprintf(buffer, sizeof(buffer), format, params);
 	if (len > 0)
 	{
-		HAL_UART_Transmit(&huart1, (uint8_t*)buffer, len, 1);
+		HAL_UART_Transmit(&huart1, (uint8_t*)buffer, len, HAL_MAX_DELAY);
 		return len;
 	}
 	return 0;
