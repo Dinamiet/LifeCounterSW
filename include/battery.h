@@ -1,12 +1,12 @@
 #ifndef _BATTERY_H_
 #define _BATTERY_H_
 
+#include "bq27441.h"
+
 #include <stdint.h>
 
-void     Battery_Setup();
-uint16_t Battery_Temperature();
-uint16_t Battery_SOC();
-int16_t  Battery_Current();
-uint16_t Battery_Capacity();
+extern BQ27441 batteryFuelGauge;
+
+void Battery_Setup();
 
 #endif
