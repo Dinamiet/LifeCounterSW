@@ -1,5 +1,6 @@
 #include "setting.h"
 
+#include "battery.h"
 #include "buzzer.h"
 #include "config.h"
 #include "display.h"
@@ -11,6 +12,7 @@ typedef struct _SettingOption_
 {
 	uint8_t (*GetSetting)(void);
 	void (*SetSetting)(uint8_t);
+	void (*Display)(EventSide side, uint16_t value);
 	uint16_t Value;
 } SettingOption;
 
@@ -25,9 +27,10 @@ static ObserverSubscription settingSwitchWatcher;
 static ObserverSubscription settingChangeWatcher;
 
 static SettingOption settingOptions[MAX_SETTINGS] = {
-		{.GetSetting = Display_GetBrightness, .SetSetting = Display_SetBrightness, .Value = 0},
-		{     .GetSetting = Buzzer_GetVolume,      .SetSetting = Buzzer_SetVolume, .Value = 0},
-		{       .GetSetting = Buzzer_GetFreq,        .SetSetting = Buzzer_SetFreq, .Value = 0},
+		{.GetSetting = Display_GetBrightness, .SetSetting = Display_SetBrightness, .Display = Display_ShowUInt, .Value = 0},
+		{     .GetSetting = Buzzer_GetVolume,      .SetSetting = Buzzer_SetVolume, .Display = Display_ShowUInt, .Value = 0},
+		{       .GetSetting = Buzzer_GetFreq,        .SetSetting = Buzzer_SetFreq, .Display = Display_ShowUInt, .Value = 0},
+		{   .GetSetting = Battery_GetSetting,    .SetSetting = Battery_SetSetting, .Display = Battery_ShowInfo, .Value = 0},
 };
 
 static Setting setting[EVENTSIDE_MAX] = {
@@ -58,9 +61,9 @@ static void nextSetting_Handler(const void* data)
 	setting[side].CurrentShown = shown;
 	Display_ShowStatus(side, ~(1 << shown));
 
-	setting[side].Options[shown].Value = setting[side].Options[shown].GetSetting();
-
-	Display_ShowUInt(side, setting[side].Options[shown].Value);
+	SettingOption* selectedOption = &setting[side].Options[shown];
+	selectedOption->Value         = selectedOption->GetSetting();
+	selectedOption->Display(side, selectedOption->Value);
 }
 
 static void changeSetting_Handler(const void* data)
@@ -71,21 +74,22 @@ static void changeSetting_Handler(const void* data)
 		return;
 
 	uint8_t shown = setting[event->Side].CurrentShown;
+	SettingOption* selectedOption = &setting[event->Side].Options[shown];
 	switch (event->Increasing)
 	{
 		case true:
-			if (setting[event->Side].Options[shown].Value < UINT16_MAX)
-				++setting[event->Side].Options[shown].Value;
+			if (selectedOption->Value < UINT16_MAX)
+				++selectedOption->Value;
 			break;
 
 		case false:
-			if (setting[event->Side].Options[shown].Value > 0)
-				--setting[event->Side].Options[shown].Value;
+			if (selectedOption->Value > 0)
+				--selectedOption->Value;
 			break;
 	}
 
-	Display_ShowUInt(event->Side, setting[event->Side].Options[shown].Value);
-	setting[event->Side].Options[shown].SetSetting(setting[event->Side].Options[shown].Value);
+	selectedOption->SetSetting(selectedOption->Value);
+	selectedOption->Display(event->Side, selectedOption->Value);
 }
 
 void Setting_Init()
@@ -99,10 +103,11 @@ void Setting_Active(EventSide side, bool active)
 	setting[side].Active = active;
 	if (active)
 	{
-		setting[side].Options[setting[side].CurrentShown].Value = setting[side].Options[setting[side].CurrentShown].GetSetting();
+		SettingOption* selectedOption = &setting[side].Options[setting[side].CurrentShown];
+		selectedOption->Value         = selectedOption->GetSetting();
 
 		Display_ShowStatus(side, ~(1 << setting[side].CurrentShown));
-		Display_ShowUInt(side, setting[side].Options[setting[side].CurrentShown].Value);
+		selectedOption->Display(side, selectedOption->Value);
 	}
 	else
 	{

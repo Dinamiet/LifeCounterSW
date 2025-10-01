@@ -13,5 +13,8 @@
 extern BQ27441 batteryFuelGauge;
 
 void Battery_Setup();
+uint8_t Battery_GetSetting();
+void    Battery_SetSetting(uint8_t);
+void    Battery_ShowInfo(EventSide side, uint16_t value);
 
 #endif
