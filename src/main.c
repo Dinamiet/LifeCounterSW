@@ -41,7 +41,7 @@ int main()
 
 	Config_Load();
 
-	CMD_Setup();
+	// CMD_Setup();
 	Battery_Setup();
 
 	while (true)
