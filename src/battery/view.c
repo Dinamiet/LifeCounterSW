@@ -68,7 +68,7 @@ static void battery_pollData(void* _)
 	for (EventSide side = 0; side < EVENTSIDE_MAX; side++)
 	{
 		if (view[side].PollingActive)
-			Display_ShowDP(side, (index % 2) ? view[side].ViewParameter : 0);
+			Display_ShowDP(side, (index % 2) ? view[side].ViewParameter + 1 : 0);
 	}
 
 	switch (index)
@@ -120,7 +120,7 @@ static void battery_pollData(void* _)
 
 uint8_t Battery_EnterSetting(EventSide side)
 {
-	Display_ShowDP(side, view[side].ViewParameter);
+	Display_ShowDP(side, view[side].ViewParameter + 1);
 	startPolling(side);
 	return view[side].ViewParameter;
 }
@@ -128,7 +128,7 @@ uint8_t Battery_EnterSetting(EventSide side)
 void Battery_ChangeSetting(EventSide side, uint8_t setting)
 {
 	view[side].ViewParameter = setting % BATTERY_MAX_PARAMS;
-	Display_ShowDP(side, view[side].ViewParameter);
+	Display_ShowDP(side, view[side].ViewParameter + 1);
 }
 
 void Battery_ShowInfo(EventSide side, uint16_t value)
