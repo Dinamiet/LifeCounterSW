@@ -1,5 +1,6 @@
 #include "battery.h"
 #include "i2c.h"
+#include "view.h"
 
 BQ27441 batteryFuelGauge;
 
@@ -19,6 +20,8 @@ void Battery_Setup()
 	batteryDevice.Handle   = &hi2c1;
 	batteryDevice.DeviceID = 0x55 << 1;
 	BQ27441_Init(&batteryFuelGauge, &batteryDevice, batteryFuelGauge_Read, batteryFuelGauge_Write);
+
+	battery_MonitoringSetup();
 
 	BQ27441Flags flags;
 	BQ27441_Flags(&batteryFuelGauge, &flags);
