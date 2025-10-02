@@ -159,6 +159,7 @@ void Setting_Active(EventSide side, bool active)
 	}
 	else
 	{
+		setting[side].Options[setting[side].CurrentShown].ExitSetting(side);
 		Config_Save();
 	}
 }
