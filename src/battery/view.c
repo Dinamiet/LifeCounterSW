@@ -165,7 +165,7 @@ void Battery_ShowInfo(EventSide side, uint16_t value)
 			break;
 
 		case BATTERY_TEMPERATURE:
-			Display_ShowUInt(side, (data.Temperature/10)-273);
+			Display_ShowUInt(side, (data.Temperature / 10) - 273);
 			break;
 
 		case BATTERY_MAX_PARAMS:
@@ -173,7 +173,7 @@ void Battery_ShowInfo(EventSide side, uint16_t value)
 	}
 }
 
-void    Battery_ExitSetting(EventSide side)
+void Battery_ExitSetting(EventSide side)
 {
 	Display_ShowDP(side, 0);
 	stopPolling(side);
