@@ -8,6 +8,8 @@
 
 #include <stdint.h>
 
+#define MAX_SETTING_VALUE 100
+
 typedef struct _SettingOption_
 {
 	uint8_t (*EnterSetting)(EventSide side);
@@ -90,7 +92,7 @@ static void changeSetting_Handler(const void* data)
 	switch (event->Increasing)
 	{
 		case true:
-			if (selectedOption->Value < UINT16_MAX)
+			if (selectedOption->Value < MAX_SETTING_VALUE)
 				++selectedOption->Value;
 			break;
 
@@ -159,7 +161,8 @@ void Setting_Active(EventSide side, bool active)
 	}
 	else
 	{
-		setting[side].Options[setting[side].CurrentShown].ExitSetting(side);
+		if (setting[side].Options[setting[side].CurrentShown].ExitSetting)
+			setting[side].Options[setting[side].CurrentShown].ExitSetting(side);
 		Config_Save();
 	}
 }
