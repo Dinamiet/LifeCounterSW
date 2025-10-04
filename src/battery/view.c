@@ -179,7 +179,7 @@ void Battery_ExitSetting(EventSide side)
 	stopPolling(side);
 }
 
-void battery_MonitoringSetup()
+void battery_ViewSetup()
 {
 	Scheduler_CreateRecurringTask(&scheduler, &batteryDataPolling, TASK_BATTERY_POLLING, battery_pollData, NULL, BATTERY_POLL_PERIOD);
 	Scheduler_Deactivate(&batteryDataPolling);
