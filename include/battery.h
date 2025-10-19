@@ -6,8 +6,8 @@
 
 #include <stdint.h>
 
-#define DEFAULT_CAPACITY          3400
-#define DEFAULT_TERMINATE_VOLTAGE 2500
+#define DEFAULT_CAPACITY          3350
+#define DEFAULT_TERMINATE_VOLTAGE 2700
 #define DEFAULT_TAPER_CURRENT     35
 #define DEFAULT_SOC_THRESHOLD     15
 
