@@ -15,12 +15,13 @@ static I2CDevice batteryDevice;
 
 static size_t batteryFuelGauge_Read(const BQ27441Device* device, const BQ27441Address address, void* data, const size_t size);
 static size_t batteryFuelGauge_Write(const BQ27441Device* device, const BQ27441Address address, const void* data, const size_t size);
+static void   batteryFuelGauge_Wait(size_t us);
 
 void Battery_Setup()
 {
 	batteryDevice.Handle   = &hi2c1;
 	batteryDevice.DeviceID = 0x55 << 1;
-	BQ27441_Init(&batteryFuelGauge, &batteryDevice, batteryFuelGauge_Read, batteryFuelGauge_Write);
+	BQ27441_Init(&batteryFuelGauge, &batteryDevice, batteryFuelGauge_Read, batteryFuelGauge_Write, batteryFuelGauge_Wait);
 
 	battery_ViewSetup();
 	battery_MonitorSetup();
@@ -62,4 +63,10 @@ static size_t batteryFuelGauge_Write(const BQ27441Device* _device, const BQ27441
 	}
 
 	return 0;
+}
+
+static void batteryFuelGauge_Wait(size_t us)
+{
+	size_t ms = us / 1000;
+	HAL_Delay(ms);
 }
