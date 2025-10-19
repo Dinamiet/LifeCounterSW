@@ -8,11 +8,19 @@
 
 void Config_Save()
 {
+	SettingStorage* storage = (SettingStorage*)SETTING_ADDRESS;
+
 	SettingStorage newSettings = {
 	    .DisplayBrightness = Display_GetBrightness(),
 	    .BuzzerVolume = Buzzer_GetVolume(),
 	    .BuzzerFreq = Buzzer_GetFreq()
 	};
+
+	bool same = storage->DisplayBrightness == newSettings.DisplayBrightness;
+	same &= storage->BuzzerVolume == newSettings.BuzzerVolume;
+	same &= storage->BuzzerFreq == newSettings.BuzzerFreq;
+	if (same)
+		return;
 
 	FLASH_EraseInitTypeDef eraseInfo = {
 		.TypeErase = FLASH_TYPEERASE_PAGES,

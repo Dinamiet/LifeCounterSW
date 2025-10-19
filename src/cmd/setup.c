@@ -26,6 +26,7 @@ static CLICommand cmdList[] = {
 		CMD(display),
 		CMD(buzzer),
 		CMD(poweroff),
+		CMD(battery),
 		{"help", CLI_Cmd, CLI_Help},
 		{  NULL,    NULL,     NULL}
 };

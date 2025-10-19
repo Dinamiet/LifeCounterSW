@@ -111,4 +111,5 @@ target_link_libraries(
 	Observer
 	CLI
 	Buffers
+	BQ27441
 )

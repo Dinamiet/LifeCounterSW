@@ -54,10 +54,4 @@ void display_Cmd(const CLI* cli, const size_t argc, char* const argv[])
 	}
 }
 
-const char* const display_Help[] = {
-		"Display settings and adjustments",
-		"Usage: display -[b:c:]",
-		" -b {value}  \tBrightness adjustment (0 - 100) ",
-		" -c {display}\tClear display",
-		0,
-};
+const char* const display_Help[] = {0};

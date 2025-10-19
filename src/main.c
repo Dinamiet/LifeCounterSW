@@ -1,5 +1,6 @@
 #include "main.h"
 
+#include "battery.h"
 #include "buzzer.h"
 #include "cmd.h"
 #include "config.h"
@@ -40,7 +41,8 @@ int main()
 
 	Config_Load();
 
-	CMD_Setup();
+	// CMD_Setup();
+	Battery_Setup();
 
 	while (true)
 	{
