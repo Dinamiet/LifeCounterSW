@@ -6,9 +6,10 @@
 
 #include <stdint.h>
 
-#define DEFAULT_CAPACITY          3500
-#define DEFAULT_TERMINATE_VOLTAGE 2450
+#define DEFAULT_CAPACITY          3400
+#define DEFAULT_TERMINATE_VOLTAGE 2500
 #define DEFAULT_TAPER_CURRENT     35
+#define DEFAULT_SOC_THRESHOLD     15
 
 extern BQ27441 batteryFuelGauge;
 
