@@ -16,6 +16,8 @@ typedef enum _MonitorState_
 	MONITOR_CONFIGURE_BATTERY,
 	MONITOR_CONFIGURE_GPIO_MODE,
 	MONITOR_CONFIGURE_GPIO_POLARITY,
+	MONITOR_CONFIGURE_SOCLOW_THRESHOLD,
+	MONITOR_CONFIGURE_SOCFINAL_THRESHOLD,
 	MONITOR_SOFT_RESET,
 	MONITOR_BAT_LOW_START,
 	MONITOR_BAT_LOW_CHECK,
@@ -80,6 +82,16 @@ static void battery_MonitorTask(void* _)
 
 		case MONITOR_CONFIGURE_GPIO_POLARITY:
 			if (BQ27441_SetGPOUTPolarity(&batteryFuelGauge, BQ27441_GPOUT_POLARITY_ACTIVE_LOW))
+				state = MONITOR_CONFIGURE_SOCLOW_THRESHOLD;
+			break;
+
+		case MONITOR_CONFIGURE_SOCLOW_THRESHOLD:
+			if (BQ27441_SetSOCLowThreshold(&batteryFuelGauge, DEFAULT_SOC_THRESHOLD, DEFAULT_SOC_THRESHOLD + 1))
+				state = MONITOR_CONFIGURE_SOCFINAL_THRESHOLD;
+			break;
+
+		case MONITOR_CONFIGURE_SOCFINAL_THRESHOLD:
+			if (BQ27441_SetSOCCriticalThreshold(&batteryFuelGauge, DEFAULT_SOC_THRESHOLD - 1, DEFAULT_SOC_THRESHOLD))
 				state = MONITOR_SOFT_RESET;
 			break;
 
@@ -97,15 +109,15 @@ static void battery_MonitorTask(void* _)
 		case MONITOR_BAT_LOW_CHECK:
 			if (HAL_GPIO_ReadPin(PWR_OK_GPIO_Port, PWR_OK_Pin) == GPIO_PIN_RESET && BQ27441_Flags(&batteryFuelGauge, &flags))
 			{
-				if (flags.Discharging)
-				{
-					Scheduler_ChangePeriod(&batteryMonitorTask, BATTERY_MONITOR_PERIOD_START);
-					Observer_Publish(&eventNotifier, EVENT_BEEP, NULL);
-				}
-				else
-				{
-					Scheduler_ChangePeriod(&batteryMonitorTask, BATTERY_MONITOR_PERIOD);
-				}
+				Scheduler_ChangePeriod(&batteryMonitorTask, BATTERY_MONITOR_PERIOD_START);
+				Observer_Publish(&eventNotifier, EVENT_BEEP, NULL);
+
+				if (flags.SOCCriticalThreshold)
+					HAL_GPIO_WritePin(PWR_Ctrl_GPIO_Port, PWR_Ctrl_Pin, GPIO_PIN_RESET);
+			}
+			else
+			{
+				Scheduler_ChangePeriod(&batteryMonitorTask, BATTERY_MONITOR_PERIOD);
 			}
 			break;
 	}
