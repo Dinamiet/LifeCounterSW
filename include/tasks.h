@@ -22,7 +22,7 @@ typedef enum _TaskID_
 #define BUTTON_LONG_PRESS_TIME       500  // ms
 #define CLI_PERIOD                   50   // ms
 #define BATTERY_POLL_PERIOD          1000 // ms
-#define BATTERY_MONITOR_PERIOD_START 100  // ms
+#define BATTERY_MONITOR_PERIOD_START 250  // ms
 #define BATTERY_MONITOR_PERIOD       5000 // ms
 
 #endif
