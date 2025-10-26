@@ -109,4 +109,7 @@ target_link_libraries(
     stm32cubemx
     Scheduler
 	Observer
+	CLI
+	Buffers
+	BQ27441
 )

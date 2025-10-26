@@ -1,6 +1,9 @@
 #include "main.h"
 
+#include "battery.h"
 #include "buzzer.h"
+#include "cmd.h"
+#include "config.h"
 #include "display.h"
 #include "encoder.h"
 #include "gpio.h"
@@ -35,6 +38,11 @@ int main()
 	Navigation_Setup();
 
 	Buzzer_Setup();
+
+	Config_Load();
+
+	// CMD_Setup();
+	Battery_Setup();
 
 	while (true)
 	{

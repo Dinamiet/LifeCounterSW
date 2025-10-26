@@ -23,7 +23,41 @@ FetchContent_Declare(
 		${CMAKE_SOURCE_DIR}/lib/Observer
 )
 
+FetchContent_Declare(
+	CLI
+	GIT_REPOSITORY
+		git@github.com:Dinamiet/CLI.git
+	GIT_TAG
+		main
+	SOURCE_DIR
+		${CMAKE_SOURCE_DIR}/lib/CLI
+)
+
+FetchContent_Declare(
+	Buffers
+	GIT_REPOSITORY
+		git@github.com:Dinamiet/Buffers.git
+	GIT_TAG
+		main
+	SOURCE_DIR
+		${CMAKE_SOURCE_DIR}/lib/Buffers
+)
+
+
+FetchContent_Declare(
+	BQ27441
+	GIT_REPOSITORY
+		git@github.com:Dinamiet/BQ27441.git
+	GIT_TAG
+		develop
+	SOURCE_DIR
+		${CMAKE_SOURCE_DIR}/lib/BQ27441
+)
+
 FetchContent_MakeAvailable(
 	Scheduler
 	Observer
+	CLI
+	Buffers
+	BQ27441
 )

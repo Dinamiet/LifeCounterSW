@@ -9,13 +9,20 @@ typedef enum _TaskID_
 	TASK_KNOB_TURN,
 	TASK_BUZZER_OFF,
 	TASK_LONG_PRESS_CHECK,
+	TASK_CLI,
+	TASK_BATTERY_POLLING,
+	TASK_BATTERY_MONITOR,
 } TaskID;
 
-#define HEARTBEAT_PERIOD       500  // ms
-#define RENDER_PERIOD          2    // ms
-#define BUTTON_MONITOR_PERIOD  5    // ms
-#define KNOB_TURN_PERIOD       5    // ms
-#define BUZZ_ON_TIME           25   // ms
-#define BUTTON_LONG_PRESS_TIME 500 // ms
+#define HEARTBEAT_PERIOD             500  // ms
+#define RENDER_PERIOD                2    // ms
+#define BUTTON_MONITOR_PERIOD        5    // ms
+#define KNOB_TURN_PERIOD             5    // ms
+#define BUZZ_ON_TIME                 25   // ms
+#define BUTTON_LONG_PRESS_TIME       500  // ms
+#define CLI_PERIOD                   50   // ms
+#define BATTERY_POLL_PERIOD          1000 // ms
+#define BATTERY_MONITOR_PERIOD_START 250  // ms
+#define BATTERY_MONITOR_PERIOD       5000 // ms
 
 #endif

@@ -16,10 +16,12 @@ void Display_Setup()
 	HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
 }
 
-void Display_Brightness(uint8_t brightness)
+void Display_SetBrightness(uint8_t brightness)
 {
 	if (brightness > 100)
 		brightness = 100;
 
 	htim16.Instance->CCR1 = brightness;
 }
+
+uint8_t Display_GetBrightness() { return htim16.Instance->CCR1; }
